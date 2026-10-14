@@ -1,0 +1,42 @@
+﻿@model IEnumerable<WebApplication6.Models.OrderPro>
+
+@{
+    ViewBag.Title = "Quản lý đơn hàng";
+    Layout = "~/Views/Shared/_StoreLayout.cshtml";
+}
+
+<h2 class="section-title">QUẢN LÝ ĐƠN HÀNG</h2>
+
+<table class="table table-bordered table-hover" style="background:white; vertical-align:middle;">
+    <thead>
+        <tr>
+            <th>Mã đơn</th>
+            <th>Ngày đặt</th>
+            <th>Khách hàng</th>
+            <th>Địa chỉ giao hàng</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>#@item.OrderID</td>
+                <td>@item.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@(item.Customer != null ? item.Customer.FullName : "")</td>
+                <td>@item.ShippingAddress</td>
+                <td style="color:#dc2626; font-weight:bold;">
+                    @item.TotalAmount.ToString("#,##0") đ
+                </td>
+                <td>@item.Status</td>
+                <td style="white-space:nowrap;">
+                    @Html.ActionLink("Chi tiết", "Details", new { id = item.OrderID }) |
+                    @Html.ActionLink("Cập nhật", "Edit", new { id = item.OrderID }) |
+                    @Html.ActionLink("Hủy đơn", "Delete", new { id = item.OrderID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

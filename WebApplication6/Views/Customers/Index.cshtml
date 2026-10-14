@@ -1,0 +1,40 @@
+﻿@model IEnumerable<WebApplication6.Models.Customer>
+
+@{
+    ViewBag.Title = "Quản lý khách hàng";
+    Layout = "~/Views/Shared/_StoreLayout.cshtml";
+}
+
+<h2 class="section-title">QUẢN LÝ KHÁCH HÀNG</h2>
+
+<p>
+    @Html.ActionLink("Thêm khách hàng", "Create", null, new { @class = "btn-brand" })
+</p>
+
+<table class="table table-bordered table-hover" style="background:white; vertical-align:middle;">
+    <thead>
+        <tr>
+            <th>Họ tên</th>
+            <th>Điện thoại</th>
+            <th>Email</th>
+            <th>Địa chỉ</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><strong>@item.FullName</strong></td>
+                <td>@item.Phone</td>
+                <td>@item.Email</td>
+                <td>@item.Address</td>
+                <td style="white-space:nowrap;">
+                    @Html.ActionLink("Sửa", "Edit", new { id = item.CustomerID }) |
+                    @Html.ActionLink("Chi tiết", "Details", new { id = item.CustomerID }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.CustomerID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
