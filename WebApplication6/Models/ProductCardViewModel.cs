@@ -7,6 +7,7 @@
         public string CategoryName { get; set; } // tên danh mục
         public decimal Price { get; set; } // đơn giá
         public string ImagePro { get; set; } // tên file ảnh trong Content/images
+        public string ShortDescription { get; set; }
 
     }
 }
