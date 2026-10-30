@@ -31,7 +31,11 @@
                 @Html.ActionLink("Quản lý khách hàng", "Index", "Customers")
                 @Html.ActionLink("Quản lý đơn hàng", "Index", "OrderProes")
 
-                <a href="#">Giỏ hàng</a>
+                @* Giỏ hàng *@
+                @{ Html.RenderAction(
+                       "BagCart",
+                       "ShoppingCart");
+                }
                 <a href="#">Đăng nhập</a>
             </nav>
         </div>
@@ -52,7 +56,7 @@
 
     @* Nạp JavaScript ở cuối trang *@
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/bootstrap.js"></script>
     @RenderSection("scripts", required: false) @* Cho phép View thêm script riêng *@
 </body>
 </html>

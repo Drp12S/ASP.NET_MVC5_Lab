@@ -11,7 +11,7 @@ namespace WebApplication6.Controllers
     {
         private DBSportStoreEntities db = new DBSportStoreEntities();
 
-        public ActionResult Index(int? categoryId,string keyword,decimal? minPrice,decimal? maxPrice, int page = 1)
+        public ActionResult Index(int? categoryId, string keyword, decimal? minPrice, decimal? maxPrice, string sortOrder, int page = 1)
         {
             // Quy định số sản phẩm mỗi trang.
             const int pageSize = 6;
@@ -28,7 +28,7 @@ namespace WebApplication6.Controllers
             // Lọc theo Category.
             if (categoryId.HasValue)
             {
-                products = products.Where( p => p.CategoryID == categoryId.Value);
+                products = products.Where(p => p.CategoryID == categoryId.Value);
             }
 
             // Tìm kiếm.
@@ -36,7 +36,7 @@ namespace WebApplication6.Controllers
             {
                 keyword = keyword.Trim();
 
-                products = products.Where( p => p.ProductName.Contains(keyword)|| p.Description.Contains(keyword));
+                products = products.Where(p => p.ProductName.Contains(keyword) || p.Description.Contains(keyword));
             }
 
             // MỚI: lọc cận dưới của giá.
@@ -54,6 +54,20 @@ namespace WebApplication6.Controllers
 
             // Đếm SAU khi đã áp dụng Category + Search + Price Filter.
             int totalItems = products.Count();
+
+            switch (sortOrder)
+            {
+                case "price_asc":
+                    products = products.OrderBy(p => p.Price);
+                    break;
+                case "price_desc":
+                    products = products.OrderByDescending(p => p.Price);
+                    break;
+                default:
+                    // Phải sắp xếp trước khi Skip/Take.
+                    products = products.OrderByDescending(p => p.ProductID);
+                    break;
+            }
 
             // Tính số trang cần có.
             int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
@@ -77,9 +91,6 @@ namespace WebApplication6.Controllers
                     .ToList(),
 
                 Products = products
-                    // Phải sắp xếp trước khi Skip/Take.
-                    .OrderByDescending(p => p.ProductID)
-
                     // Bỏ qua sản phẩm của các trang trước.
                     .Skip((page - 1) * pageSize)
 
@@ -92,7 +103,8 @@ namespace WebApplication6.Controllers
                         NamePro = p.ProductName,
                         CategoryName = p.Category.CategoryName,
                         Price = p.Price,
-                        ImagePro = p.ImageUrl
+                        ImagePro = p.ImageUrl,
+                        StockQuantity = p.StockQuantity,
                     })
                     .ToList(),
 
@@ -103,6 +115,9 @@ namespace WebApplication6.Controllers
                 // MỚI: giữ lại khoảng giá để View hiển thị lại.
                 MinPrice = minPrice,
                 MaxPrice = maxPrice,
+
+                TotalItems = totalItems,
+                SortOrder = sortOrder,
 
                 // Giữ nguyên thông tin phân trang.
                 CurrentPage = page,

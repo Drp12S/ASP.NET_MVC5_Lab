@@ -35,6 +35,11 @@ namespace WebApplication6.Models
         // decimal? cho phép để trống ô Giá đến.
         public decimal? MaxPrice { get; set; }
 
+        public int StockQuantity { get; set; }
+
+        public int TotalItems { get; set; }
+
+        public string SortOrder { get; set; }
 
     }
 }

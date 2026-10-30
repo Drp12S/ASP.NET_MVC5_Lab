@@ -9,5 +9,7 @@
         public string ImagePro { get; set; } // tên file ảnh trong Content/images
         public string ShortDescription { get; set; }
 
+        public int StockQuantity { get; set; }
+
     }
 }
